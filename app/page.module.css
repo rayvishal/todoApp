@@ -12,6 +12,7 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  /* background-color: yellow; */
 }
 .btn {
   margin-left: 20px;
@@ -23,4 +24,19 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.tasks {
+  font-family: cursive;
+  display: inline;
+  text-align: center;
+  font-size: 30px;
+}
+/* style={{ display: "inline", textAlign: "center" }} */
+.dateAndTime {
+  border: 2px solid green;
+  font-family: cursive;
+  background-color: black;
+  color: white;
+  padding: 15px;
+  font-size: 35px;
 }

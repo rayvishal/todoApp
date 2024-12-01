@@ -10,16 +10,12 @@ import TextField from "@mui/material/TextField";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 // import axios from "axios";
-import { ConstructionOutlined } from "@mui/icons-material";
 export default function Home() {
-  // let currentDate = new Date();
-  // const [know,setKnow]=useState(localStorage.setItem("value",true));
   const [textChange, setTextChange] = useState("");
   const [editInput, setEditInput] = useState("randomText");
   const [data, setData] = useState([]);
   const [text, setText] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
-  const [removeEditInput, setRemoveEditInput] = useState(false);
+
   const [currentTime, setCurrentTime] = useState("");
 
   const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -40,43 +36,30 @@ export default function Home() {
   let currentHour = new Date().getHours();
   let currentMinute = new Date().getMinutes();
   let currentSecond = new Date().getSeconds();
-  let currentDate = `${currentYear},${currentMonth},${weekday[currentDay]}`;
+  let currentDate = `${currentYear}-${currentMonth}-${weekday[currentDay]}`;
   let Time = `${currentHour}:${currentMinute}:${currentSecond}  seconds`;
-  // console.log(Date);
-  // let array = [];
-  function click() {
-    console.log(localStorage.getItem("tasks"));
-  }
-  function handleClick() {
+
+  function handleClickAddTask() {
     if (localStorage.getItem("tasks") == null) {
-      console.log(text, "singletext");
       data.push(text);
+      setData(data);
       let convertArrToStr = JSON.stringify(data);
-      let firstTimeSentData = localStorage.setItem("tasks", convertArrToStr);
-      let firstTimeBringData = localStorage.getItem("tasks");
-      let firstTimeParseData = JSON.parse(firstTimeBringData);
-      console.log(firstTimeBringData, "brign");
-      setData(firstTimeParseData);
+      localStorage.setItem("tasks", convertArrToStr);
     } else {
       let retString = localStorage.getItem("tasks");
-      // console.log("hiii");
+
       let retArray = JSON.parse(retString);
       retArray.push(text);
+      setData(retArray);
       let convertArrToStr = JSON.stringify(retArray);
       localStorage.setItem("tasks", convertArrToStr);
-      let aretString = localStorage.getItem("tasks");
-      let aretArray = JSON.parse(aretString);
-      setData(aretArray);
-      // console.log(data);
     }
   }
-  function handleChecked(e) {
-    // setIsChecked(true);
-    // if (checked) {
-    //   console.log("checked");
-    // }
+  function handleClickDeleteTask(e) {
+    setEditInput("Random Text");
+
     let retString = localStorage.getItem("tasks");
-    // console.log("hiii");
+    console.log("hiii");
     let retArray = JSON.parse(retString);
     retArray.splice(e, 1);
     let leftTask = JSON.stringify(retArray);
@@ -87,8 +70,8 @@ export default function Home() {
     // setEditInput(true);
     setEditInput(index);
   }
-  function removeEventListener(index) {
-    setEditInput("hello");
+  function handleClickSaveTask(index) {
+    setEditInput("Random text to change the value of editTextArea");
 
     data.splice(index, 1, textChange);
     let dataSent = JSON.stringify(data);
@@ -100,7 +83,7 @@ export default function Home() {
   }, 1000);
   useEffect(() => {
     if (localStorage.getItem("tasks") == null) {
-      setData(data);
+      // setData(data);
     } else {
       let retString = localStorage.getItem("tasks");
 
@@ -112,26 +95,13 @@ export default function Home() {
   // console.log(data);
   return (
     <div className={styles.page}>
-      {/* <Button variant="contained" color="success" style={{ fontSize: "20px" }}>
-        {currentDate}
-      </Button> */}
-      <h3
-        style={{
-          border: "2px solid green",
-          fontFamily: "fantasy",
-          backgroundColor: "black",
-          color: "white",
-          padding: "15px",
-          fontSize: "35px",
-        }}
-        onClick={click}
-      >
+      <p className={styles.dateAndTime}>
         {currentDate}
 
         <br />
         {currentTime}
-      </h3>
-      {/* {console.log("hel")} */}
+      </p>
+
       <div>
         <TextField
           id="standard-basic"
@@ -146,7 +116,7 @@ export default function Home() {
           fontSize="large"
           color="success"
           onClick={() => {
-            handleClick();
+            handleClickAddTask();
           }}
         />
       </div>
@@ -156,16 +126,17 @@ export default function Home() {
             <div>
               <Checkbox
                 {...label}
-                checked={isChecked}
+                // checked={isChecked}
+                checked={false}
                 // defaultChecked
                 color="success"
                 sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
                 style={{ display: "inline" }}
                 onClick={() => {
-                  handleChecked(index);
+                  handleClickDeleteTask(index);
                 }}
               />
-              <h1 style={{ display: "inline", textAlign: "center" }}>{e} </h1>
+              <p className={styles.tasks}>{e} </p>
               <Button
                 onClick={() => {
                   handleEditClick(index);
@@ -175,12 +146,11 @@ export default function Home() {
               >
                 Edit
               </Button>
-              {/* {index == editInput && console.log(editInput, index, "edit")} */}
+
               {console.log(editInput, index, "check")}
               {index == editInput && (
                 <div className={styles.saveInputSection}>
                   <TextField
-                    // value={textChange}
                     defaultValue={e}
                     type="text"
                     onChange={(e) => {
@@ -192,7 +162,7 @@ export default function Home() {
                     variant="contained"
                     color="success"
                     onClick={() => {
-                      removeEventListener(index);
+                      handleClickSaveTask(index);
                     }}
                   >
                     Save
