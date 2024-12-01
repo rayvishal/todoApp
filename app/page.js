@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 // import axios from "axios";
 export default function Home() {
   const [textChange, setTextChange] = useState("");
-  const [editInput, setEditInput] = useState("randomText");
+  const [editInput, setEditInput] = useState(null);
   const [data, setData] = useState([]);
   const [text, setText] = useState("");
 
@@ -56,7 +56,7 @@ export default function Home() {
     }
   }
   function handleClickDeleteTask(e) {
-    setEditInput("Random Text");
+    setEditInput(null);
 
     let retString = localStorage.getItem("tasks");
     console.log("hiii");
@@ -71,7 +71,7 @@ export default function Home() {
     setEditInput(index);
   }
   function handleClickSaveTask(index) {
-    setEditInput("Random text to change the value of editTextArea");
+    setEditInput(null);
 
     data.splice(index, 1, textChange);
     let dataSent = JSON.stringify(data);
